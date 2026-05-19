@@ -26,7 +26,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         <nav className="hidden md:flex gap-8 text-sm font-medium tracking-wide">
-          <Link href="/#collection" className="hover:text-gray-500 transition-colors">
+          <Link href="/collection" className="hover:text-gray-500 transition-colors">
             COLLECTION
           </Link>
           <Link href="/#about" className="hover:text-gray-500 transition-colors">

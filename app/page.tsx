@@ -24,7 +24,7 @@ export default function Home() {
             Elevate your everyday with our curated collection of luxury staples.
           </p>
           <Link
-            href="#collection"
+            href="/collection"
             className="inline-block border border-white px-10 py-4 text-sm font-medium tracking-widest hover:bg-white hover:text-black transition-colors duration-300"
           >
             DISCOVER THE COLLECTION
@@ -47,7 +47,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16">
             <h2 className="text-2xl md:text-3xl font-bold tracking-[0.2em]">CURATED ARRIVALS</h2>
-            <Link href="#collection" className="hidden md:inline-block text-sm font-medium tracking-widest hover:text-gray-500 transition-colors border-b border-black dark:border-white pb-1">
+            <Link href="/collection" className="hidden md:inline-block text-sm font-medium tracking-widest hover:text-gray-500 transition-colors border-b border-black dark:border-white pb-1">
               VIEW ALL
             </Link>
           </div>
@@ -59,7 +59,7 @@ export default function Home() {
           </div>
 
           <div className="mt-16 text-center md:hidden">
-            <Link href="#collection" className="inline-block border border-black dark:border-white px-8 py-3 text-sm font-medium tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
+            <Link href="/collection" className="inline-block border border-black dark:border-white px-8 py-3 text-sm font-medium tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
               VIEW ALL
             </Link>
           </div>
