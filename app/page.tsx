@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { products } from "@/lib/data";
+import { getProducts } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}

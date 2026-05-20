@@ -1,3 +1,5 @@
+import { client } from "./sanity";
+
 export interface Product {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ export interface Product {
   details: string[];
 }
 
+// Fallback/Static products array
 export const products: Product[] = [
   {
     id: "silk-archive-slip",
@@ -56,6 +59,57 @@ export const products: Product[] = [
   }
 ];
 
-export function getProduct(id: string): Product | undefined {
-  return products.find(p => p.id === id);
+// Helper to check if Sanity is configured
+const isSanityConfigured = () => 
+  !!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID && 
+  !!process.env.NEXT_PUBLIC_SANITY_DATASET &&
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== "placeholder";
+
+// Fetch all products dynamically from Sanity with local fallback
+export async function getProducts(): Promise<Product[]> {
+  if (!isSanityConfigured()) {
+    return products;
+  }
+
+  try {
+    const query = `*[_type == "product"] {
+      "id": slug.current,
+      name,
+      description,
+      price,
+      "image": image.asset->url,
+      category,
+      details
+    }`;
+    const data = await client.fetch(query);
+    // If configured but empty, return original static fallback list to avoid blank storefronts
+    return data && data.length > 0 ? data : products;
+  } catch (error) {
+    console.error("Sanity fetch error, using fallbacks:", error);
+    return products;
+  }
+}
+
+// Fetch single product dynamically from Sanity with local fallback
+export async function getProduct(id: string): Promise<Product | undefined> {
+  if (!isSanityConfigured()) {
+    return products.find(p => p.id === id);
+  }
+
+  try {
+    const query = `*[_type == "product" && slug.current == $id][0] {
+      "id": slug.current,
+      name,
+      description,
+      price,
+      "image": image.asset->url,
+      category,
+      details
+    }`;
+    const data = await client.fetch(query, { id });
+    return data || products.find(p => p.id === id);
+  } catch (error) {
+    console.error(`Sanity fetch single error for ${id}:`, error);
+    return products.find(p => p.id === id);
+  }
 }

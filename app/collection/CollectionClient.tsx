@@ -1,23 +1,29 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { products } from "@/lib/data";
+import { products, type Product } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 
-export default function CollectionClient() {
+interface CollectionClientProps {
+  initialProducts?: Product[];
+}
+
+export default function CollectionClient({ initialProducts }: CollectionClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("ALL");
   const [sortOption, setSortOption] = useState("featured");
 
+  const displayProducts = initialProducts || products;
+
   // Get unique categories dynamically from product data
   const categories = useMemo(() => {
-    const allCategories = products.map((p) => p.category.toUpperCase());
+    const allCategories = displayProducts.map((p) => p.category.toUpperCase());
     return ["ALL", ...Array.from(new Set(allCategories))];
-  }, []);
+  }, [displayProducts]);
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
-    let result = [...products];
+    let result = [...displayProducts];
 
     // Filter by Category
     if (activeCategory !== "ALL") {
@@ -156,7 +162,7 @@ export default function CollectionClient() {
         {/* Info bar / count */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-xs font-medium tracking-widest text-zinc-500 dark:text-zinc-400 uppercase">
-            Showing {filteredAndSortedProducts.length} of {products.length} pieces
+            Showing {filteredAndSortedProducts.length} of {displayProducts.length} pieces
           </p>
         </div>
 
